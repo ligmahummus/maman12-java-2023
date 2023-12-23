@@ -1,5 +1,5 @@
 /**
- * Default constructor, sets the date to a given input.
+ * Sets the date to a given input.
  * If one of the values are invalid, sets the date to the default date
  * (1/1/2000).
  * 
