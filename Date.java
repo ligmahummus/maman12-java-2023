@@ -31,45 +31,18 @@ public class Date {
     private final int DEFAULT_DAY = 1;
 
     public Date(int day, int month, int year) {
-        boolean isLeapYear = isLeapYear(year);
+        // Make sure to leave these functions in the right order where day is the last.
+        // This is because the day setter function validates the day according to given
+        // month and year.
 
         // Check if month is valid (1-12)
-        if (month >= MIN_MONTH && month <= MAX_MONTH) {
-            _month = month;
-        }
-
-        // Check if day is valid (1-31)
-        if (day >= MIN_MONTH_DAYS && day <= MAX_MONTH_DAYS) {
-            // Check the case for the months that has 30 days
-            if (month == 4 || month == 6 || month == 9 || month == 11) {
-                if (day <= 30) {
-                    _day = day;
-                }
-            } else if (month == 2) {
-                // Check the case for February and if it's a leap year
-                if (isLeapYear) {
-
-                    // Expected value is between 1-29
-                    if (day <= MAX_FEB_LEAP_YEAR) {
-                        _day = day;
-                    }
-                } else {
-                    // If year is not a leap year, the expected value is between 1-28
-                    if (day <= MAX_FEB_NON_LEAP_YEAR) {
-                        _day = day;
-                    }
-                }
-            } else {
-                // If the month is not February, April, June, September or November, the
-                // expected value is between 1-31
-                _day = day;
-            }
-        }
+        setMonth(month);
 
         // Check if year is valid (1-9999)
-        if (year >= 1 && year <= 9999) {
-            _year = year;
-        }
+        setYear(year);
+
+        // Check if day is valid (1-31)
+        setDay(day);
 
         // If any of the values are invalid, set the default date (1/1/2000)
         if (_day == 0 || _month == 0 || _year == 0) {
@@ -89,9 +62,8 @@ public class Date {
     private boolean isLeapYear(int year) {
         if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -122,21 +94,14 @@ public class Date {
     }
 
     /**
-     * Sets the day of the date.
-     * 
-     * @param day
-     */
-    public void setDay(int day) {
-        _day = day;
-    }
-
-    /**
      * Sets the month of the date.
      * 
      * @param month
      */
     public void setMonth(int month) {
-        _month = month;
+        if (month >= MIN_MONTH && month <= MAX_MONTH) {
+            _month = month;
+        }
     }
 
     /**
@@ -145,7 +110,51 @@ public class Date {
      * @param year
      */
     public void setYear(int year) {
-        _year = year;
+        if (year >= 1 && year <= 9999) {
+            _year = year;
+        }
+    }
+
+    /**
+     * Sets the day of the date.
+     * 
+     * @param day
+     */
+    public void setDay(int day) {
+        // Validates the day according to the current set month
+        setDay(day, _month);
+    }
+
+    private void setDay(int day, int month) {
+        boolean isLeapYear = isLeapYear(_year);
+
+        // Check if day is valid (1-31)
+        if (day >= MIN_MONTH_DAYS && day <= MAX_MONTH_DAYS) {
+            // Check the case for the months that has 30 days
+            if (month == 4 || month == 6 || month == 9 || month == 11) {
+                if (day <= 30) {
+                    _day = day;
+                }
+            } else if (month == 2) {
+                // Check the case for February and if it's a leap year
+                if (isLeapYear) {
+
+                    // Expected value is between 1-29
+                    if (day <= MAX_FEB_LEAP_YEAR) {
+                        _day = day;
+                    }
+                } else {
+                    // If year is not a leap year, the expected value is between 1-28
+                    if (day <= MAX_FEB_NON_LEAP_YEAR) {
+                        _day = day;
+                    }
+                }
+            } else {
+                // If the month is not February, April, June, September or November, the
+                // expected value is between 1-31
+                _day = day;
+            }
+        }
     }
 
     /**
@@ -191,5 +200,24 @@ public class Date {
 
     private int calculateDate(Date other) {
         return 0;
+    }
+
+    private String standardizeNumber(int num) {
+        return num < 10 ? "0" + num : "" + num;
+    }
+
+    /**
+     * Returns a string representation of the date.
+     * 
+     * @return String
+     */
+    public String toString() {
+        return standardizeNumber(_day) + "/" + standardizeNumber(_month) + "/" + _year;
+    }
+
+    // REMOVE THIS BEFORE SUBMITTING
+    public static void main(String[] args) {
+        Date date = new Date(29, 1, 2000);
+        System.out.println(date.toString());
     }
 }
