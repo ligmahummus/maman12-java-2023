@@ -3,9 +3,8 @@
  * If one of the values are invalid, sets the date to the default date
  * (1/1/2000).
  * 
- * @param day
- * @param month
- * @param year
+ * @version
+ * @author Ariel Aharon
  */
 public class Date {
     // Object attributes declaration
@@ -30,6 +29,9 @@ public class Date {
     private final int DEFAULT_MONTH = 1;
     private final int DEFAULT_DAY = 1;
 
+    /**
+     * Class's constructor.
+     */
     public Date(int day, int month, int year) {
         // Make sure to leave these functions in the right order where day is the last.
         // This is because the day setter function validates the day according to given
@@ -67,34 +69,34 @@ public class Date {
     }
 
     /**
-     * Returns the day of the date.
+     * Returns the day of the object's date.
      * 
-     * @return
+     * @return day
      */
     public int getDay() {
         return _day;
     }
 
     /**
-     * Returns the month of the date.
+     * Returns the month of the object's date.
      * 
-     * @return
+     * @return month
      */
     public int getMonth() {
         return _month;
     }
 
     /**
-     * Returns the year of the date.
+     * Returns the year of the object's date.
      * 
-     * @return
+     * @return year
      */
     public int getYear() {
         return _year;
     }
 
     /**
-     * Sets the month of the date.
+     * Sets the month of the object's date.
      * 
      * @param month
      */
