@@ -93,4 +93,103 @@ public class Date {
             return false;
         }
     }
+
+    /**
+     * Returns the day of the date.
+     * 
+     * @return
+     */
+    public int getDay() {
+        return _day;
+    }
+
+    /**
+     * Returns the month of the date.
+     * 
+     * @return
+     */
+    public int getMonth() {
+        return _month;
+    }
+
+    /**
+     * Returns the year of the date.
+     * 
+     * @return
+     */
+    public int getYear() {
+        return _year;
+    }
+
+    /**
+     * Sets the day of the date.
+     * 
+     * @param day
+     */
+    public void setDay(int day) {
+        _day = day;
+    }
+
+    /**
+     * Sets the month of the date.
+     * 
+     * @param month
+     */
+    public void setMonth(int month) {
+        _month = month;
+    }
+
+    /**
+     * Sets the year of the date.
+     * 
+     * @param year
+     */
+    public void setYear(int year) {
+        _year = year;
+    }
+
+    /**
+     * Check if date input is equal to the current object's date.
+     * 
+     * @param other
+     * @return boolean
+     */
+    public boolean equals(Date other) {
+        return true;
+    }
+
+    /**
+     * Check if date input is before the current object's date.
+     * 
+     * @param other
+     * @return boolean
+     */
+    public boolean before(Date other) {
+        return true;
+    }
+
+    /**
+     * Check if date input is after the current object's date.
+     * 
+     * @param other
+     * @return boolean
+     */
+    public boolean after(Date other) {
+        return true;
+    }
+
+    /**
+     * Returns the difference in days between the current object's date and the
+     * input date.
+     * 
+     * @param other
+     * @return int
+     */
+    public int difference(Date other) {
+        return 0;
+    }
+
+    private int calculateDate(Date other) {
+        return 0;
+    }
 }
