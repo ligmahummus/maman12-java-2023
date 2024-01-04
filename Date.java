@@ -340,13 +340,19 @@ public class Date {
 
         // Check if the new year is a leap year
         boolean isNewYearLeapYear = isLeapYear(newYear);
+        boolean isCurrentLeapYear = isLeapYear(_year);
 
         // Assume the new day is the current set day
         int newDay = _day;
 
-        // Consider the case of leap year in February and the current day is the last
-        // day of the month.
-        if (isNewYearLeapYear && _month == FEBRUARY && (_day == MAX_FEB_NON_LEAP_YEAR || _day == MAX_FEB_LEAP_YEAR)) {
+        // Check if the current month is February and the current day is the last day of
+        // the month.
+        // If so, set the new day to the last day of February in a leap year or a
+        // non-leap year based on the newely calculated year.
+
+        if (_month == FEBRUARY && (!isCurrentLeapYear && _day == MAX_FEB_NON_LEAP_YEAR
+                || isCurrentLeapYear && _day == MAX_FEB_LEAP_YEAR)) {
+
             // Set the new day to the last day of February in a leap year or a non-leap
             // year.
             newDay = isNewYearLeapYear ? MAX_FEB_LEAP_YEAR : MAX_FEB_NON_LEAP_YEAR;

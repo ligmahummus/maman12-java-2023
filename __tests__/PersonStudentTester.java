@@ -19,31 +19,43 @@ public class PersonStudentTester {
         System.out.println("\tName of p1 = " + name);
         System.out.println("\tId of p1 = " + id);
         System.out.println("\tDate of birth of p1 = " + date);
-       
+
         p1.setName("Miriam Levi");
         p1.setId("121212");
         p1.setDateOfBirth(new Date(19, 9, 1981));
         System.out.println("p1 :\n" + p1);
- 
+
         System.out.println("\n3. Testing equals method:");
         Person p3 = new Person("Yossef Ben Avrham", 5, 3, 1998, "123123123");
         Person p4 = new Person("Yossef Ben Avrham", 5, 3, 1998, "321321321");
         System.out.println("p3 :\n" + p3);
         System.out.println("p4 :\n" + p4);
-        if(p3.equals(p4))
-             System.out.println("\tp3 is the same person as p4");
-        else 
-             System.out.println("\tp3 isn't the same person as p4");
+        if (p3.equals(p4))
+            System.out.println("\tp3 is the same person as p4");
+        else
+            System.out.println("\tp3 isn't the same person as p4");
 
         System.out.println("\n4. Testing compare method:");
         System.out.println("p1 :\n" + p1);
         System.out.println("p3 :\n" + p3);
-        if(p1.compareTo(p3) > 0)
+        if (p1.compareTo(p3) > 0)
             System.out.println("\tp1 is older than p3");
         else if (p1.compareTo(p3) < 0)
             System.out.println("\tp1 is younger than p3");
         else
             System.out.println("\tp1 as the same age as p3");
+
+        Person p5 = new Person("Yossef Ben Avrham", 5, 3, 1998, "321321321");
+        Person p6 = new Person("Pavlov Smirnoff", 5, 3, 1998, "345634565");
+        System.out.println("\n4. Testing compare method:");
+        System.out.println("p1 :\n" + p1);
+        System.out.println("p3 :\n" + p3);
+        if (p5.compareTo(p6) > 0)
+            System.out.println("\tp5 is older than p6");
+        else if (p5.compareTo(p6) < 0)
+            System.out.println("\tp5 is younger than p6");
+        else
+            System.out.println("\tp5 as the same age as p6");
         System.out.println("********** Test Person - Ended **********");
     }
 }

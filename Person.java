@@ -1,28 +1,48 @@
 public class Person {
+    // Object attributes declaration
     private String _name;
     private String _id;
     private Date _birthDate;
 
-    final String DEFAULT_NAME = "Someone";
-    final String DEFAULT_ID = "000000000";
+    // Default values
+    private final String DEFAULT_NAME = "Someone";
+    private final String DEFAULT_ID = "000000000";
+
+    private final int PERSON_IS_OLDER = 1;
+    private final int PERSON_IS_YOUNGER = -1;
+    private final int PERSON_IS_SAME_AGE = 0;
 
     /**
-     * Constructor for Person.
+     * Person accepts a name, birth date and id and sets the attributes.
+     * 
+     * @param name
+     * @param day
+     * @param month
+     * @param year
+     * @param id
      */
     public Person(String name, int day, int month, int year, String id) {
 
         // Set Person's name
-        setName(name);
+        if (isNameValid(name)) {
+            setName(name);
+        } else {
+            setName(DEFAULT_NAME);
+        }
 
         // Set Person's id
-        setId(id);
+        if (isIDValid(id)) {
+            setId(id);
+        } else {
+            setId(DEFAULT_ID);
+        }
 
         // Set Person's birth date
         setDateOfBirth(new Date(day, month, year));
     }
 
     /**
-     * Copy constructor for Person.
+     * Person accepts another Person object and copies its attributes.
      * 
      * @param other
      */
@@ -65,10 +85,22 @@ public class Person {
      * @param name
      */
     public void setName(String name) {
-        if (name != "") {
+        if (isNameValid(name)) {
             _name = name;
+        }
+    }
+
+    /**
+     * Checks if the name provided is valid.
+     * 
+     * @param name
+     * @return true if valid, false otherwise
+     */
+    private boolean isNameValid(String name) {
+        if (name == "") {
+            return false;
         } else {
-            _name = DEFAULT_NAME;
+            return true;
         }
     }
 
@@ -79,10 +111,22 @@ public class Person {
      * @param id
      */
     public void setId(String id) {
-        if (id.length() != 9) {
-            _id = DEFAULT_ID;
-        } else {
+        if (isIDValid(id)) {
             _id = id;
+        }
+    }
+
+    /**
+     * Checks if the ID provided is valid.
+     * 
+     * @param id
+     * @return true if valid, false otherwise
+     */
+    private boolean isIDValid(String id) {
+        if (id.length() != 9) {
+            return false;
+        } else {
+            return true;
         }
     }
 
@@ -95,17 +139,42 @@ public class Person {
         _birthDate = date;
     }
 
+    /**
+     * Returns a string representation of the person.
+     * 
+     * @return string
+     */
     public String toString() {
         return "Name: " + _name + "\nID: " + _id + "\nDate of birth: " + _birthDate.toString();
     }
 
+    /**
+     * Accepts another Person object and compares their ages.
+     * 
+     * @param other
+     * @return 0 if equal, 1 if older, -1 if younger
+     */
     public int compareTo(Person other) {
-        return 0;
+        if (_birthDate.before(other._birthDate)) {
+            return PERSON_IS_OLDER;
+        } else if (_birthDate.equals(other._birthDate)) {
+            return PERSON_IS_SAME_AGE;
+        } else {
+            return PERSON_IS_YOUNGER;
+        }
     }
 
-    // REMOVE THIS BEFORE SUBMITTING
-    public static void main(String[] args) {
-        Person person = new Person("John Doe", 28, 2, 1996, "123456789");
-        System.out.println(person.toString());
+    /**
+     * Accepts another Person object and checks if they are equal.
+     * 
+     * @param other
+     * @return boolean
+     */
+    public boolean equals(Person other) {
+        if (_name == other._name && _id == other._id && _birthDate.equals(other._birthDate)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
