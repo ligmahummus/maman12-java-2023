@@ -6,7 +6,10 @@ public class Person {
     final String DEFAULT_NAME = "Someone";
     final String DEFAULT_ID = "000000000";
 
-    public Person(String name, String id, int day, int month, int year) {
+    /**
+     * Constructor for Person.
+     */
+    public Person(String name, int day, int month, int year, String id) {
 
         // Set Person's name
         setName(name);
@@ -19,9 +22,20 @@ public class Person {
     }
 
     /**
+     * Copy constructor for Person.
+     * 
+     * @param other
+     */
+    public Person(Person other) {
+        _name = other._name;
+        _id = other._id;
+        _birthDate = other._birthDate;
+    }
+
+    /**
      * Returns the name of the person.
      * 
-     * @return
+     * @return name
      */
     public String getName() {
         return _name;
@@ -39,7 +53,7 @@ public class Person {
     /**
      * Returns the birth date of the person.
      * 
-     * @return
+     * @return birthDate
      */
     public Date getDateOfBirth() {
         return _birthDate;
@@ -85,9 +99,13 @@ public class Person {
         return "Name: " + _name + "\nID: " + _id + "\nDate of birth: " + _birthDate.toString();
     }
 
+    public int compareTo(Person other) {
+        return 0;
+    }
+
     // REMOVE THIS BEFORE SUBMITTING
     public static void main(String[] args) {
-        Person person = new Person("John Doe", "12345689", 21, 2, 1997);
+        Person person = new Person("John Doe", 28, 2, 1996, "123456789");
         System.out.println(person.toString());
     }
 }
