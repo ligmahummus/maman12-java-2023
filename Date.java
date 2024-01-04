@@ -263,7 +263,7 @@ public class Date {
         // Before method excludes the case where the dates are equal.
         // Therefore, if the date is not before the current object's date, it must be
         // after.
-        if (before(other) && other.getDay() != _day && other.getMonth() != _month && other.getYear() != _year) {
+        if (before(other) || (other.getDay() == _day && other.getMonth() == _month && other.getYear() == _year)) {
             return false;
         } else {
             return true;

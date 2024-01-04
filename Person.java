@@ -49,7 +49,7 @@ public class Person {
     public Person(Person other) {
         _name = other._name;
         _id = other._id;
-        _birthDate = other._birthDate;
+        _birthDate = new Date(other._birthDate);
     }
 
     /**
@@ -136,7 +136,7 @@ public class Person {
      * @param date
      */
     public void setDateOfBirth(Date date) {
-        _birthDate = date;
+        _birthDate = new Date(date);
     }
 
     /**

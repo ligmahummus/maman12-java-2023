@@ -11,6 +11,7 @@ public class Apartment {
     private final int DEFAULT_NO_OF_ROOMS = 3;
     private final double DEFAULT_AREA = 80;
     private final double DEFAULT_PRICE = 5000;
+    private final int MAX_RENTAL_DIFF_PERIOD = 90;
 
     /**
      * Apartment constructor accepts number of rooms, area, price, tenant, rental
@@ -54,6 +55,7 @@ public class Apartment {
 
         // Set rental end date
         Date rentalEndDate = new Date(endDay, endMonth, endYear);
+
         if (isRentalDatesValid(_rentalStartDate, rentalEndDate)) {
             _rentalEndDate = rentalEndDate;
         } else {
@@ -63,6 +65,8 @@ public class Apartment {
 
     /**
      * Apartment constructor accepts another Apartment object and copies its values.
+     * 
+     * @param other
      */
     public Apartment(Apartment other) {
         _noOfRooms = other._noOfRooms;
@@ -226,8 +230,13 @@ public class Apartment {
      * @return true if tenant was changed, false otherwise
      */
     public boolean changeTenant(Date startDate, Person p, double price) {
-        if ((startDate.after(_rentalEndDate) && _rentalEndDate.difference(startDate) <= 90) && price >= _price
-                && p.compareTo(_tenant) == -1) {
+        boolean isStartDateAfter = startDate.after(_rentalStartDate);
+        boolean isNinetyDaysBeforeRentalEnd = _rentalEndDate.difference(startDate) <= MAX_RENTAL_DIFF_PERIOD;
+
+        boolean isPriceGreaterOrEqual = price >= _price;
+        boolean isNewTenantYounger = p.compareTo(_tenant) == -1;
+
+        if (isStartDateAfter && isNinetyDaysBeforeRentalEnd && isPriceGreaterOrEqual && isNewTenantYounger) {
             _tenant = new Person(p);
             _rentalStartDate = new Date(startDate);
             _rentalEndDate = _rentalStartDate.addYearsToDate(1);
