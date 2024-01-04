@@ -75,7 +75,7 @@ public class Date {
 
     /**
      * Date object takes a different Date object as input and return's a deep copy
-     * of it.
+     * of the object.
      */
     public Date(Date other) {
         // Copy the values from the input date, we don't need to use the setter methods
@@ -291,8 +291,15 @@ public class Date {
 
     }
 
-    // computes the day number since the beginning of the Christian counting of
-    // years.
+    /**
+     * Computes the day number since the beginning of the Christian counting of
+     * years.
+     * 
+     * @param day
+     * @param month
+     * @param year
+     * @return days
+     */
     private int calculateDate(int day, int month, int year) {
         if (month < 3) {
             year--;
