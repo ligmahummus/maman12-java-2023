@@ -1,3 +1,10 @@
+/**
+ * Apartment class represents an apartment, with number of rooms, area, pric
+ * and a current resident.
+ * 
+ * @version 12/2023
+ * @author Ariel Aharon 20441
+ */
 public class Apartment {
     // Object attributes declaration
     private int _noOfRooms; // Must be int and positive
@@ -11,7 +18,14 @@ public class Apartment {
     private final int DEFAULT_NO_OF_ROOMS = 3;
     private final double DEFAULT_AREA = 80;
     private final double DEFAULT_PRICE = 5000;
+
     private final int MAX_RENTAL_DIFF_PERIOD = 90;
+    private final int DEFAULT_RENTAL_YEARS_GAP = 1;
+    private final int DEFAULT_NEW_TENANT_LEASE_YEARS = 1;
+
+    private final double MIN_PRICE = 0;
+    private final double MIN_AREA = 0;
+    private final int MIN_RENTAL_PREIOD_EXTENSION = 0;
 
     /**
      * Apartment constructor accepts number of rooms, area, price, tenant, rental
@@ -59,7 +73,7 @@ public class Apartment {
         if (isRentalDatesValid(_rentalStartDate, rentalEndDate)) {
             _rentalEndDate = rentalEndDate;
         } else {
-            _rentalEndDate = _rentalStartDate.addYearsToDate(1);
+            _rentalEndDate = _rentalStartDate.addYearsToDate(DEFAULT_RENTAL_YEARS_GAP);
         }
     }
 
@@ -108,7 +122,7 @@ public class Apartment {
     }
 
     private boolean isAreaValid(double area) {
-        if (area <= 0) {
+        if (area <= MIN_AREA) {
             return false;
         } else {
             return true;
@@ -127,7 +141,7 @@ public class Apartment {
     }
 
     private boolean isPriceValid(double price) {
-        if (price <= 0) {
+        if (price <= MIN_PRICE) {
             return false;
         } else {
             return true;
@@ -180,7 +194,7 @@ public class Apartment {
      * @param years
      */
     public void extendRentalPeriod(int years) {
-        if (years > 0) {
+        if (years > MIN_RENTAL_PREIOD_EXTENSION) {
             // Extend rental period by years
             _rentalEndDate = _rentalEndDate.addYearsToDate(years);
         }
@@ -193,9 +207,18 @@ public class Apartment {
      * @return true if equal, false otherwise
      */
     public boolean equals(Apartment other) {
-        if (_noOfRooms == other._noOfRooms && _area == other._area && _price == other._price
-                && _tenant.equals(other._tenant) && _rentalStartDate.equals(other._rentalStartDate)
-                && _rentalEndDate.equals(other._rentalEndDate)) {
+        boolean isNoOfRoomsEqual = _noOfRooms == other._noOfRooms;
+
+        boolean isRentalStartDateEqual = _rentalStartDate.equals(other._rentalStartDate);
+        boolean isRentalEndDateEqual = _rentalEndDate.equals(other._rentalEndDate);
+
+        boolean isTenantEqual = _tenant.equals(other._tenant);
+
+        boolean isAreaEqual = _area == other._area;
+        boolean isPriceEqual = _price == other._price;
+
+        if (isNoOfRoomsEqual && isAreaEqual && isPriceEqual && isTenantEqual && isRentalStartDateEqual
+                && isRentalEndDateEqual) {
             return true;
         } else {
             return false;
@@ -239,7 +262,7 @@ public class Apartment {
         if (isStartDateAfter && isNinetyDaysBeforeRentalEnd && isPriceGreaterOrEqual && isNewTenantYounger) {
             _tenant = new Person(p);
             _rentalStartDate = new Date(startDate);
-            _rentalEndDate = _rentalStartDate.addYearsToDate(1);
+            _rentalEndDate = _rentalStartDate.addYearsToDate(DEFAULT_NEW_TENANT_LEASE_YEARS);
             _price = price;
             return true;
         } else {

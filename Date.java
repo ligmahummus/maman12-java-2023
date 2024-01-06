@@ -1,9 +1,7 @@
 /**
- * Sets the date to a given input.
- * If one of the values are invalid, sets the date to the default date
- * (1/1/2000).
+ * Date class represents a date object with day, month and year.
  * 
- * @version 02/2023
+ * @version 12/2023
  * @author Ariel Aharon 20441
  */
 public class Date {

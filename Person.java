@@ -1,3 +1,9 @@
+/**
+ * Person class represents a person with a name, id and birth date.
+ * 
+ * @version 12/2023
+ * @author Ariel Aharon 20441
+ */
 public class Person {
     // Object attributes declaration
     private String _name;
