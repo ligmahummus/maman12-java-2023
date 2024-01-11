@@ -222,9 +222,9 @@ public class Date {
      * @return boolean
      */
     public boolean before(Date other) {
-        int otherDay = other.getDay(); // Get the day of the input date
-        int otherMonth = other.getMonth(); // Get the month of the input date
-        int otherYear = other.getYear(); // Get the year of the input date
+        int otherDay = other._day; // Get the day of the input date
+        int otherMonth = other._month; // Get the month of the input date
+        int otherYear = other._year; // Get the year of the input date
 
         // Firstly check if the year is before the current object's year
         if (_year < otherYear) {
@@ -357,5 +357,11 @@ public class Date {
         }
 
         return new Date(newDay, _month, newYear);
+    }
+
+    public static void main(String[] args) {
+        Date d = new Date(28, 2, 2023);
+
+        System.out.println(d.addYearsToDate(1).toString());
     }
 }

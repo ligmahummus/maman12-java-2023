@@ -41,40 +41,25 @@ public class Apartment {
     public Apartment(int noOfRooms, double area, double price, Person p, int startDay, int startMonth, int startYear,
             int endDay, int endMonth, int endYear) {
         // Set number of rooms
-        if (isNoOfRoomsValid(noOfRooms)) {
-            _noOfRooms = noOfRooms;
-        } else {
-            _noOfRooms = DEFAULT_NO_OF_ROOMS;
-        }
+        setAndValidateNoOfRooms(noOfRooms);
 
         // Set area
-        if (isAreaValid(area)) {
-            _area = area;
-        } else {
-            _area = DEFAULT_AREA;
-        }
+        setAndValidateArea(area);
 
         // Set price
-        if (isPriceValid(price)) {
-            _price = price;
-        } else {
-            _price = DEFAULT_PRICE;
-        }
+        setAndValidatePrice(price);
 
         // Set tenant
-        _tenant = new Person(p);
+        setTenant(p);
 
-        // Set rental start date
-        _rentalStartDate = new Date(startDay, startMonth, startYear);
+        // Create new rental start date
+        Date rentalStartDate = new Date(startDay, startMonth, startYear);
 
-        // Set rental end date
+        // Create new rental end date
         Date rentalEndDate = new Date(endDay, endMonth, endYear);
 
-        if (isRentalDatesValid(_rentalStartDate, rentalEndDate)) {
-            _rentalEndDate = rentalEndDate;
-        } else {
-            _rentalEndDate = _rentalStartDate.addYearsToDate(DEFAULT_RENTAL_YEARS_GAP);
-        }
+        // Set rental dates
+        setAndValidateRentalDates(rentalStartDate, rentalEndDate);
     }
 
     /**
@@ -102,6 +87,26 @@ public class Apartment {
         }
     }
 
+    /**
+     * Sets the number of rooms in the apartment if valid, else sets to default
+     * value.
+     * 
+     * @param num
+     */
+    private void setAndValidateNoOfRooms(int num) {
+        if (isNoOfRoomsValid(num)) {
+            _noOfRooms = num;
+        } else {
+            _noOfRooms = DEFAULT_NO_OF_ROOMS;
+        }
+    }
+
+    /**
+     * Returns true if the number of rooms is valid, false otherwise.
+     * 
+     * @param num
+     * @return true if valid, false otherwise
+     */
     private boolean isNoOfRoomsValid(int num) {
         if (num <= 0) {
             return false;
@@ -121,6 +126,25 @@ public class Apartment {
         }
     }
 
+    /**
+     * Sets the area of the apartment if valid, else sets to default value.
+     * 
+     * @param area
+     */
+    private void setAndValidateArea(double area) {
+        if (isAreaValid(area)) {
+            _area = area;
+        } else {
+            _area = DEFAULT_AREA;
+        }
+    }
+
+    /**
+     * Returns true if the area is valid, false otherwise.
+     * 
+     * @param area
+     * @return true if valid, false otherwise
+     */
     private boolean isAreaValid(double area) {
         if (area <= MIN_AREA) {
             return false;
@@ -140,6 +164,25 @@ public class Apartment {
         }
     }
 
+    /**
+     * Sets the price of the apartment if valid, else sets to default value.
+     * 
+     * @param price
+     */
+    private void setAndValidatePrice(double price) {
+        if (isPriceValid(price)) {
+            _price = price;
+        } else {
+            _price = DEFAULT_PRICE;
+        }
+    }
+
+    /**
+     * Returns true if the price is valid, false otherwise.
+     * 
+     * @param price
+     * @return true if valid, false otherwise
+     */
     private boolean isPriceValid(double price) {
         if (price <= MIN_PRICE) {
             return false;
@@ -158,7 +201,7 @@ public class Apartment {
     }
 
     /**
-     * Sets the rental start date of the apartment.
+     * Sets the rental start date of the apartment if dates are valid.
      * 
      * @param d
      */
@@ -179,6 +222,30 @@ public class Apartment {
         }
     }
 
+    /**
+     * Sets the rental start and end dates of the apartment if valid, else sets to
+     * default values.
+     * 
+     * @param startDate
+     * @param endDate
+     */
+    private void setAndValidateRentalDates(Date startDate, Date endDate) {
+        _rentalStartDate = startDate;
+
+        if (isRentalDatesValid(startDate, endDate)) {
+            _rentalEndDate = endDate;
+        } else {
+            _rentalEndDate = startDate.addYearsToDate(DEFAULT_RENTAL_YEARS_GAP);
+        }
+    }
+
+    /**
+     * Returns true if the rental dates are valid, false otherwise.
+     * 
+     * @param startDate
+     * @param endDate
+     * @return true if valid, false otherwise
+     */
     private boolean isRentalDatesValid(Date startDate, Date endDate) {
         if (endDate.before(startDate) || endDate.equals(startDate)) {
             return false;

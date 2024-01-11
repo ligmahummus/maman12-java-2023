@@ -30,18 +30,10 @@ public class Person {
     public Person(String name, int day, int month, int year, String id) {
 
         // Set Person's name
-        if (isNameValid(name)) {
-            setName(name);
-        } else {
-            setName(DEFAULT_NAME);
-        }
+        setAndValidateName(name);
 
         // Set Person's id
-        if (isIDValid(id)) {
-            setId(id);
-        } else {
-            setId(DEFAULT_ID);
-        }
+        setAndValidateID(id);
 
         // Set Person's birth date
         setDateOfBirth(new Date(day, month, year));
@@ -97,6 +89,19 @@ public class Person {
     }
 
     /**
+     * Sets the name of the person if valid, else sets a default value.
+     * 
+     * @param name
+     */
+    private void setAndValidateName(String name) {
+        if (isNameValid(name)) {
+            _name = name;
+        } else {
+            _name = DEFAULT_NAME;
+        }
+    }
+
+    /**
      * Checks if the name provided is valid.
      * 
      * @param name
@@ -119,6 +124,19 @@ public class Person {
     public void setId(String id) {
         if (isIDValid(id)) {
             _id = id;
+        }
+    }
+
+    /**
+     * Sets the id of the person if valid, else sets a default value.
+     * 
+     * @param id
+     */
+    private void setAndValidateID(String id) {
+        if (isIDValid(id)) {
+            _id = id;
+        } else {
+            _id = DEFAULT_ID;
         }
     }
 
