@@ -7,7 +7,7 @@ public class ApartmentStudentTester {
         System.out.println("********** Test Apartment - Started **********");
         System.out.println("\n1. Testing Constructors and toString:");
         Person p1 = new Person("Israel Israeli", 22, 10, 1993, "123456789");
-        Apartment a1 = new Apartment(4, 81, 6500, p1, 1, 7, 2022, 1, 7, 2024);
+        Apartment a1 = new Apartment(4, 81, 6500, p1, 1, 7, 2022, 2, 7, 2022);
         System.out.println("a1:\n" + a1);
         Apartment a2 = new Apartment(a1);
         System.out.println("a2:\n" + a2);

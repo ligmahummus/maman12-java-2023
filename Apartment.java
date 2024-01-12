@@ -25,6 +25,7 @@ public class Apartment {
 
     private final double MIN_PRICE = 0;
     private final double MIN_AREA = 0;
+    private final int MIN_NO_OF_ROOMS = 0;
     private final int MIN_RENTAL_PREIOD_EXTENSION = 0;
 
     /**
@@ -108,11 +109,7 @@ public class Apartment {
      * @return true if valid, false otherwise
      */
     private boolean isNoOfRoomsValid(int num) {
-        if (num <= 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return num > MIN_NO_OF_ROOMS;
     }
 
     /**
@@ -146,11 +143,7 @@ public class Apartment {
      * @return true if valid, false otherwise
      */
     private boolean isAreaValid(double area) {
-        if (area <= MIN_AREA) {
-            return false;
-        } else {
-            return true;
-        }
+        return area > MIN_AREA;
     }
 
     /**
@@ -184,11 +177,7 @@ public class Apartment {
      * @return true if valid, false otherwise
      */
     private boolean isPriceValid(double price) {
-        if (price <= MIN_PRICE) {
-            return false;
-        } else {
-            return true;
-        }
+        return price > MIN_PRICE;
     }
 
     /**
@@ -247,11 +236,7 @@ public class Apartment {
      * @return true if valid, false otherwise
      */
     private boolean isRentalDatesValid(Date startDate, Date endDate) {
-        if (endDate.before(startDate) || endDate.equals(startDate)) {
-            return false;
-        } else {
-            return true;
-        }
+        return startDate.before(endDate) && !startDate.equals(endDate);
     }
 
     /**
@@ -370,7 +355,7 @@ public class Apartment {
      * @return tenant
      */
     public Person getTenant() {
-        return _tenant;
+        return new Person(_tenant);
     }
 
     /**
@@ -379,7 +364,7 @@ public class Apartment {
      * @return rentalStartDate
      */
     public Date getRentalStartDate() {
-        return _rentalStartDate;
+        return new Date(_rentalStartDate);
     }
 
     /**
@@ -388,14 +373,14 @@ public class Apartment {
      * @return rentalEndDate
      */
     public Date getRentalEndDate() {
-        return _rentalEndDate;
+        return new Date(_rentalEndDate);
     }
 
     /**
      * Returns a string representation of the apartment.
      */
     public String toString() {
-        return "Number of rooms: " + _noOfRooms + "\nArea: " + _area + "\nPrice: " + _price + " NIS" + "\nTenant: "
+        return "Number of rooms: " + _noOfRooms + "\nArea: " + _area + "\nPrice: " + _price + " NIS" + "\nTenant name: "
                 + _tenant.getName()
                 + "\nRental start date: " + _rentalStartDate.toString() + "\nRental end date: "
                 + _rentalEndDate.toString();

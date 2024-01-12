@@ -74,7 +74,7 @@ public class Person {
      * @return birthDate
      */
     public Date getDateOfBirth() {
-        return _birthDate;
+        return new Date(_birthDate);
     }
 
     /**
@@ -195,10 +195,6 @@ public class Person {
      * @return boolean
      */
     public boolean equals(Person other) {
-        if (_name == other._name && _id == other._id && _birthDate.equals(other._birthDate)) {
-            return true;
-        } else {
-            return false;
-        }
+        return _name == other._name && _id == other._id && _birthDate.equals(other._birthDate);
     }
 }

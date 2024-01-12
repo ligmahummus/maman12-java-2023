@@ -52,22 +52,21 @@ public class Date {
      * @param year
      */
     public Date(int day, int month, int year) {
-        // Make sure to leave these functions in the right order where day is the last.
-        // This is because the day setter function validates the day according to given
-        // month and year.
-
-        // Check if month is valid (1-12)
-        setMonth(month);
-
-        // Check if year is valid (1-9999)
+        // Set year
         setYear(year);
 
-        // Check if day is valid (1-31)
+        // Set month
+        setMonth(month);
+
+        // Set day
         setDay(day);
 
-        // If any of the values are invalid, set the default date (1/1/2000)
+        // If any of the values are invalid, the private vars aren't set which means
+        // they are defaulted to zero, if any, set the default date to 1/1/2000.
         if (_day == 0 || _month == 0 || _year == 0) {
-            setDefaultDateValues();
+            _day = DEFAULT_DAY;
+            _month = DEFAULT_MONTH;
+            _year = DEFAULT_YEAR;
         }
     }
 
@@ -78,18 +77,9 @@ public class Date {
     public Date(Date other) {
         // Copy the values from the input date, we don't need to use the setter methods
         // and validate the values, because we know they are valid.
-        _day = other.getDay();
-        _month = other.getMonth();
-        _year = other.getYear();
-    }
-
-    /**
-     * Sets the current date to the default date (1/1/2000)
-     */
-    private void setDefaultDateValues() {
-        _day = DEFAULT_DAY;
-        _month = DEFAULT_MONTH;
-        _year = DEFAULT_YEAR;
+        _day = other._day;
+        _month = other._month;
+        _year = other._year;
     }
 
     /**
@@ -133,13 +123,46 @@ public class Date {
     }
 
     /**
+     * Checks if the day is valid for February's leap / non-leap year cases.
+     * 
+     * @param day
+     * @param year
+     * @return true if valid, false otherwise
+     */
+    private boolean isValidFebruaryDay(int day, int year) {
+        if (isLeapYear(year)) {
+            return day <= MAX_FEB_LEAP_YEAR;
+        } else {
+            return day <= MAX_FEB_NON_LEAP_YEAR;
+        }
+    }
+
+    private boolean isValidFebruaryDay(int day) {
+        return isValidFebruaryDay(day, _year);
+    }
+
+    /**
      * Sets the month of the object's date.
      * 
      * @param month
      */
     public void setMonth(int monthToSet) {
         if (monthToSet >= MIN_MONTH && monthToSet <= MAX_MONTH) {
-            _month = monthToSet;
+            if (monthToSet == FEBRUARY) {
+                // We prevent here transitions like 29/3 -> 29/2 when is a non-leap year
+                if (isValidFebruaryDay(_day)) {
+                    _month = monthToSet;
+                }
+                // We prevent here transitions like 31/5 -> 31/6 when these months have max 30
+                // days
+            } else if (monthToSet == APRIL || monthToSet == JUNE || monthToSet == SEPTEMBER || monthToSet == NOVEMBER) {
+                if (_day <= MAX_MONTH_THIRTY_DAYS) {
+                    _month = monthToSet;
+                }
+            } else {
+                // For other cases like 28/2 -> 28/3 etc... we don't need to validate the day
+                _month = monthToSet;
+            }
         }
     }
 
@@ -150,7 +173,13 @@ public class Date {
      */
     public void setYear(int yearToSet) {
         if (yearToSet >= MIN_YEAR && yearToSet <= MAX_YEAR) {
-            _year = yearToSet;
+            if (_month == FEBRUARY) {
+                if (isValidFebruaryDay(_day, yearToSet)) {
+                    _year = yearToSet;
+                }
+            } else {
+                _year = yearToSet;
+            }
         }
     }
 
@@ -160,33 +189,18 @@ public class Date {
      * @param day
      */
     public void setDay(int dayToSet) {
-        // Validates the day according to the current set month
-        setDay(dayToSet, _month);
-    }
-
-    private void setDay(int dayToSet, int month) {
-        boolean isLeapYear = isLeapYear(_year);
 
         // Check if day is valid (1-31)
         if (dayToSet >= MIN_MONTH_DAYS && dayToSet <= MAX_MONTH_DAYS) {
             // Check the case for the months that has 30 days
-            if (month == APRIL || month == JUNE || month == SEPTEMBER || month == NOVEMBER) {
+            if (_month == APRIL || _month == JUNE || _month == SEPTEMBER || _month == NOVEMBER) {
                 if (dayToSet <= MAX_MONTH_THIRTY_DAYS) {
                     _day = dayToSet;
                 }
-            } else if (month == 2) {
+            } else if (_month == FEBRUARY) {
                 // Check the case for February and if it's a leap year
-                if (isLeapYear) {
-
-                    // Expected value is between 1-29
-                    if (dayToSet <= MAX_FEB_LEAP_YEAR) {
-                        _day = dayToSet;
-                    }
-                } else {
-                    // If year is not a leap year, the expected value is between 1-28
-                    if (dayToSet <= MAX_FEB_NON_LEAP_YEAR) {
-                        _day = dayToSet;
-                    }
+                if (isValidFebruaryDay(dayToSet)) {
+                    _day = dayToSet;
                 }
             } else {
                 // If the month is not February, April, June, September or November, the
@@ -203,16 +217,8 @@ public class Date {
      * @return boolean
      */
     public boolean equals(Date other) {
-        int otherDay = other.getDay(); // Get the day of the input date
-        int otherMonth = other.getMonth(); // Get the month of the input date
-        int otherYear = other.getYear(); // Get the year of the input date
-
         // Check if the date is equal to the current object's date
-        if (_day == otherDay && _month == otherMonth && _year == otherYear) {
-            return true;
-        } else {
-            return false;
-        }
+        return _day == other._day && _month == other._month && _year == other._year;
     }
 
     /**
@@ -222,26 +228,23 @@ public class Date {
      * @return boolean
      */
     public boolean before(Date other) {
-        int otherDay = other._day; // Get the day of the input date
-        int otherMonth = other._month; // Get the month of the input date
-        int otherYear = other._year; // Get the year of the input date
 
         // Firstly check if the year is before the current object's year
-        if (_year < otherYear) {
+        if (_year < other._year) {
             return true;
 
             // If the year is equal, check if the month is before the current object's month
-        } else if (_year == otherYear) {
+        } else if (_year == other._year) {
 
             // If the month is before the current object's month, return true
-            if (_month < otherMonth) {
+            if (_month < other._month) {
                 return true;
 
                 // If the month is equal, check if the day is before the current object's day
-            } else if (_month == otherMonth) {
+            } else if (_month == other._month) {
 
                 // If the day is before the current object's day, return true
-                if (_day < otherDay) {
+                if (_day < other._day) {
                     return true;
                 }
             }
@@ -261,11 +264,7 @@ public class Date {
         // Before method excludes the case where the dates are equal.
         // Therefore, if the date is not before the current object's date, it must be
         // after.
-        if (before(other) || (other.getDay() == _day && other.getMonth() == _month && other.getYear() == _year)) {
-            return false;
-        } else {
-            return true;
-        }
+        return other.before(this);
     }
 
     /**
@@ -276,9 +275,9 @@ public class Date {
      * @return int
      */
     public int difference(Date other) {
-        int otherDay = other.getDay();
-        int otherMonth = other.getMonth();
-        int otherYear = other.getYear();
+        int otherDay = other._day;
+        int otherMonth = other._month;
+        int otherYear = other._year;
 
         // Using the calculateDate function to calculate the difference in days between
         // the two dates.
@@ -357,11 +356,5 @@ public class Date {
         }
 
         return new Date(newDay, _month, newYear);
-    }
-
-    public static void main(String[] args) {
-        Date d = new Date(28, 2, 2023);
-
-        System.out.println(d.addYearsToDate(1).toString());
     }
 }
